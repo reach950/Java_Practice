@@ -6,7 +6,7 @@ import java.util.Set;
 public class ValidSudoku {
     public static void main(String[] args) {
         char[][] board = {
-                {'5', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'8', '3', '.', '.', '7', '.', '.', '.', '.'},
                 {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
                 {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
                 {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
@@ -20,8 +20,8 @@ public class ValidSudoku {
     }
 
     public boolean isValidSudoku(char[][] board) {
+        Set<String> s = new HashSet<>();
         for (int i = 0; i < 9; i++) {
-            Set<String> s = new HashSet<>();
             for (int j = 0; j < 9; j++) {
                 char number = board[i][j];
                 if (number != '.') {
