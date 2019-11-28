@@ -1,13 +1,21 @@
 package com.example.data_structure_and_algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class NQueens {
     List<List<String>> result = new ArrayList<>();
+    List<int[]> res = new ArrayList<>();
 
     public static void main(String[] args) {
-        new NQueens().solveNQueens(4);
+//        List<List<String>> res = new NQueens().solveNQueens(4);
+//        System.out.println(res);
+        NQueens nqs = new NQueens();
+        nqs.bitSolve(4, 0, 0, 0, 0, new int[4]);
+        for (int[] array : nqs.res) {
+            System.out.println(Arrays.toString(array));
+        }
     }
 
     public List<List<String>> solveNQueens(int n) {
@@ -59,5 +67,19 @@ public class NQueens {
             stringQueens.add(sb.toString());
         }
         return stringQueens;
+    }
+
+    private void bitSolve(int n, int row, int column, int pie, int na, int[] queens) {
+        if (row >= n) {
+            res.add(queens.clone());
+            return;
+        }
+        int bits = (~(column | pie | na)) & ((1 << n) - 1);
+        while (bits > 0) {
+            int p = bits & -bits;
+            queens[row] = p;
+            bitSolve(n, row + 1, column | p, (pie | p) << 1, (na | p) >> 1, queens);
+            bits &= bits - 1;
+        }
     }
 }
