@@ -1,6 +1,9 @@
 package com.example.leetcode;
 
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
+
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -81,6 +84,42 @@ public class LinkedList {
                 return start.next;
             }
         }
+    }
+
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) {
+            return null;
+        }
+        PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.length, new Comparator<ListNode>() {
+            @Override
+            public int compare(ListNode o1, ListNode o2) {
+                if (o1.val < o2.val) {
+                    return -1;
+                } else if (o1.val == o2.val) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
+        ListNode start = new ListNode(0);
+        ListNode cur = start;
+
+        for (ListNode n : lists) {
+            if (n != null) {
+                queue.offer(n);
+            }
+        }
+
+        while (!queue.isEmpty()) {
+            cur.next = queue.poll();
+            cur = cur.next;
+            if (cur.next != null) {
+                queue.offer(cur.next);
+            }
+        }
+        return start.next;
     }
 }
 
