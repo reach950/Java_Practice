@@ -1,12 +1,15 @@
 package com.example.leetcode;
 
 public class CoinChange {
+    int minCount = Integer.MAX_VALUE;
+
     public static void main(String[] args) {
         int[] coins = {1, 2, 5};
         int amount = 11;
-        System.out.println(new CoinChange().coinChange(coins, amount));
+        System.out.println(new CoinChange().coinChange1(coins, amount));
     }
 
+    //动态规划
     public int coinChange(int[] coins, int amount) {
         if (coins.length == 0 || amount < 0) {
             return -1;
@@ -24,5 +27,29 @@ public class CoinChange {
             }
         }
         return dp_status[amount] > amount ? -1 : dp_status[amount];
+    }
+
+    //回溯
+    public int coinChange1(int[] coins, int amount) {
+        if (coins.length == 0 || amount < 0) {
+            return -1;
+        }
+        helper(coins, amount, 0, 0);
+        return minCount == Integer.MAX_VALUE ? -1 : minCount;
+    }
+
+    public void helper(int[] coins, int amount, int sum, int count) {
+        if (sum > amount) {
+            return;
+        }
+        if (sum == amount) {
+            if (count < minCount) {
+                minCount = count;
+            }
+            return;
+        }
+        for (int coin : coins) {
+            helper(coins, amount, sum + coin, count + 1);
+        }
     }
 }
