@@ -1,4 +1,4 @@
-package com.example.data_structure_and_algorithm;
+package com.example.geekbang;
 
 public class Greedy {
 	//给定一个包含负数的整数数组，返回最大的子数组之和

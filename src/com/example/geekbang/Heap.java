@@ -1,4 +1,4 @@
-package com.example.data_structure_and_algorithm;
+package com.example.geekbang;
 
 public class Heap {
 	  private int[] a; // 数组，从下标 1 开始存储数据

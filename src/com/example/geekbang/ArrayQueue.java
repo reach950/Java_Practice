@@ -1,4 +1,4 @@
-package com.example.data_structure_and_algorithm;
+package com.example.geekbang;
 
 public class ArrayQueue {
 	private String[] items;
