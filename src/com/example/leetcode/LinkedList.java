@@ -13,6 +13,7 @@ import java.util.PriorityQueue;
  * }
  */
 public class LinkedList {
+    //206. Reverse Linked List 反转链表
     public ListNode reverseList(ListNode head) {
         ListNode prev = null;
         ListNode curr = head;
@@ -26,6 +27,18 @@ public class LinkedList {
         return prev;
     }
 
+    //反转链表递归实现
+    public ListNode reverseList1(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode p = reverseList1(head.next);
+        head.next.next = head;
+        head.next = null;
+        return p;
+    }
+
+    //24. Swap Nodes in Pairs 两两交换链表中的节点
     public ListNode swapPairs(ListNode head) {
         ListNode start = new ListNode(0);
         ListNode prev = start;
@@ -42,6 +55,7 @@ public class LinkedList {
         return start.next;
     }
 
+    //141. Linked List Cycle 判断链表是否有环
     public boolean hasCycle(ListNode head) {
         ListNode slow = head, fast = head;
         while (slow != null && fast != null && fast.next != null) {
@@ -54,38 +68,37 @@ public class LinkedList {
         return false;
     }
 
+    //25. Reverse Nodes in k-Group k个一组翻转链表
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || head.next == null || k < 2) {
             return head;
         }
-        ListNode prev, start, headK, tailK, a, b, temp;
-        start = tailK = new ListNode(0);
-        headK = a = b = head;
-        int count;
-        while (true) {
-            count = 0;
-            while (a != null && count < k) {
-                count++;
-                a = a.next;
-            }
-            if (count == k) {
-                prev = null;
-                for (int i = 0; i < k; i++) {
-                    temp = b.next;
-                    b.next = prev;
-                    prev = b;
-                    b = temp;
+        ListNode start, prevSubTail, subHead, subTail, nextSubHead;
+        start = prevSubTail = new ListNode(0);
+        start.next = head;
+        subHead = subTail = head;
+        while (subHead != null) {
+            for (int i = 0; i < k - 1; i++) {
+                if (subTail == null) {
+                    return start.next;
                 }
-                tailK.next = prev;
-                tailK = headK;
-                headK = b;
-            } else {
-                tailK.next = b;
-                return start.next;
+                subTail = subTail.next;
             }
+            nextSubHead = subTail.next;
+            //将子链表的tail的next指针设为null,反转链表
+            subTail.next = null;
+            reverseList(subHead);
+            //把子链表接起来,此时的subHead为反转后的tail,subTail为反转后的head
+            prevSubTail.next = subTail;
+            subHead.next = nextSubHead;
+            //将prevSubTail更新子链表的tail,subHead,subTail更新到下一个子链表的head
+            prevSubTail = subHead;
+            subHead = subTail = nextSubHead;
         }
+        return start.next;
     }
 
+    //23. Merge k Sorted Lists合并K个排序链表
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
@@ -93,13 +106,7 @@ public class LinkedList {
         PriorityQueue<ListNode> queue = new PriorityQueue<>(lists.length, new Comparator<ListNode>() {
             @Override
             public int compare(ListNode o1, ListNode o2) {
-                if (o1.val < o2.val) {
-                    return -1;
-                } else if (o1.val == o2.val) {
-                    return 0;
-                } else {
-                    return 1;
-                }
+                return o1.val - o2.val;
             }
         });
 
