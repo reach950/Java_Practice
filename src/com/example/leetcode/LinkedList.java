@@ -2,7 +2,9 @@ package com.example.leetcode;
 
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * Definition for singly-linked list.
@@ -55,7 +57,7 @@ public class LinkedList {
         return start.next;
     }
 
-    //141. Linked List Cycle 判断链表是否有环
+    //141. Linked List Cycle 判断链表是否有环(用快慢指针实现，空间复杂度O(1))
     public boolean hasCycle(ListNode head) {
         ListNode slow = head, fast = head;
         while (slow != null && fast != null && fast.next != null) {
@@ -64,6 +66,20 @@ public class LinkedList {
             if (slow == fast) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    //判断链表是否有环,哈希表实现
+    public boolean hasCycle1(ListNode head) {
+        Set<ListNode> set = new HashSet<>();
+        ListNode curr = head;
+        while (curr != null) {
+            if (set.contains(curr)) {
+                return true;
+            }
+            set.add(curr);
+            curr = curr.next;
         }
         return false;
     }
@@ -98,7 +114,7 @@ public class LinkedList {
         return start.next;
     }
 
-    //23. Merge k Sorted Lists合并K个排序链表
+    //23. Merge k Sorted Lists 合并K个排序链表
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) {
             return null;
@@ -126,6 +142,50 @@ public class LinkedList {
                 queue.offer(cur.next);
             }
         }
+        return start.next;
+    }
+
+    //2. Add Two Numbers 两数相加
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode start = new ListNode(0);
+        ListNode curr = start;
+        ListNode l1Curr = l1, l2Curr = l2;
+        int v = 0;//进位
+
+        while (l1Curr != null || l2Curr != null) {
+            int l1Val = (l1Curr != null) ? l1Curr.val : 0;
+            int l2Val = (l2Curr != null) ? l2Curr.val : 0;
+            int sum = l1Val + l2Val + v;
+            curr.next = new ListNode(sum % 10);
+            v = sum / 10;
+            if (l1Curr != null) {
+                l1Curr = l1Curr.next;
+            }
+            if (l2Curr != null) {
+                l2Curr = l2Curr.next;
+            }
+            curr = curr.next;
+        }
+
+        if (v > 0) {
+            curr.next = new ListNode(v);
+        }
+        return start.next;
+    }
+
+    //19. Remove Nth Node From End of List 删除链表的倒数第N个节点
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode start = new ListNode(0);
+        start.next = head;
+        ListNode slow = start, fast = start;
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+        }
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        slow.next = slow.next.next;
         return start.next;
     }
 }
