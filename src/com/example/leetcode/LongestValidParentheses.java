@@ -39,8 +39,9 @@ public class LongestValidParentheses {
     //解法2，暴力求解优化O(n^2)
     public int longestValidParentheses2(String s) {
         int maxLen = 0;
-        int count = 0;
+        int count;
         for (int i = 0; i < s.length() - 1; i++) {
+            count = 0;
             for (int j = i; j < s.length(); j++) {
                 if (s.charAt(j) == '(') {
                     count++;
